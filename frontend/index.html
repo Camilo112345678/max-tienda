@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light">
+  <title>MAX TIENDA</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Encabezado -->
+  <header>
+    <h1>MAX TIENDA</h1>
+    <input type="text" id="buscador" placeholder="Buscar producto...">
+    <button id="btnLogin">Iniciar sesión</button>
+    <span id="saludo" class="oculto"></span>
+    <button id="btnPanel" class="oculto">Mi panel</button>
+    <button id="btnSalir" class="oculto">Salir</button>
+    <button id="btnCarrito">🛒 Carrito (<span id="contador">0</span>)</button>
+  </header>
+
+  <!-- Panel del vendedor (solo se ve con la sesión iniciada) -->
+  <section id="panel" class="oculto">
+    <h2>Panel de vendedor</h2>
+
+    <h3>Publicar un producto</h3>
+    <div class="formulario">
+      <input type="text" id="pNombre" placeholder="Nombre del producto">
+      <input type="text" id="pCategoria" list="listaCategorias" placeholder="Categoría">
+      <datalist id="listaCategorias"></datalist>
+      <input type="number" id="pPrecio" placeholder="Precio" min="0">
+      <input type="number" id="pStock" placeholder="Cantidad disponible" min="0">
+      <input type="text" id="pEmoji" placeholder="Emoji (por si no hay foto)" maxlength="4">
+      <div class="campo-foto">
+        <label>Foto del producto: <input type="file" id="pFoto" accept="image/*"></label>
+        <img id="pVista" class="miniatura oculto" alt="Vista previa de la foto">
+      </div>
+      <button id="btnPublicar">Publicar</button>
+    </div>
+
+    <h3>Mis productos</h3>
+    <div id="misProductos"></div>
+
+    <button id="btnCerrarPanel" class="gris">Cerrar panel</button>
+  </section>
+
+  <!-- Filtros -->
+  <section class="filtros">
+    <select id="categoria">
+      <option value="Todas">Todas las categorías</option>
+    </select>
+
+    <input type="number" id="precioMax" placeholder="Precio máximo">
+
+    <select id="orden">
+      <option value="normal">Ordenar por...</option>
+      <option value="menor">Precio: menor a mayor</option>
+      <option value="mayor">Precio: mayor a menor</option>
+      <option value="nombre">Nombre (A-Z)</option>
+    </select>
+
+    <button id="btnLimpiar">Limpiar</button>
+  </section>
+
+  <p id="resultados"></p>
+
+  <!-- Aquí se muestran los productos -->
+  <main id="productos"></main>
+
+  <!-- Carrito (se abre al hacer clic en el botón) -->
+  <aside id="carrito" class="oculto">
+    <h2>Tu carrito</h2>
+    <div id="listaCarrito"></div>
+    <p id="total"></p>
+    <button id="btnCerrar">Cerrar</button>
+    <button id="btnVaciar">Vaciar carrito</button>
+  </aside>
+
+  <!-- Ventana de inicio de sesión / registro -->
+  <div id="login" class="modal oculto">
+    <div class="caja">
+      <h2 id="tituloLogin">Iniciar sesión</h2>
+      <p>Entra para vender tus productos en MAX TIENDA.</p>
+      <input type="text" id="lNombre" placeholder="Tu nombre o el de tu tienda" class="oculto">
+      <input type="email" id="lCorreo" placeholder="Correo">
+      <input type="password" id="lClave" placeholder="Contraseña (mínimo 4 caracteres)">
+      <p id="mensajeLogin" class="error"></p>
+      <button id="btnEntrar">Entrar</button>
+      <button id="btnCancelarLogin" class="gris">Cancelar</button>
+      <p><button id="cambiarModo" class="enlace">¿No tienes cuenta? Regístrate</button></p>
+    </div>
+  </div>
+
+  <!-- Mensajes cortos -->
+  <div id="aviso" class="oculto"></div>
+
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

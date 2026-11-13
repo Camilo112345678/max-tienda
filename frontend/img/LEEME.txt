@@ -1,0 +1,11 @@
+Fotos de los productos de MAX TIENDA
+=====================================
+Pon aquí las fotos (formato .jpg) con estos nombres exactos:
+
+chaqueta.jpg      tenis.jpg        gafas.jpg        audifonos.jpg
+teclado.jpg       portatil.jpg     camara.jpg       planta.jpg
+lampara.jpg       tazas.jpg        balon.jpg        yoga.jpg
+novela.jpg        libro-cocina.jpg
+
+Si una foto no está, la página muestra el emoji del producto.
+Fotos gratis para usar: unsplash.com, pexels.com, pixabay.com
