@@ -6,7 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from database import supabase
 
-app = FastAPI(title="Servicio de Catálogo - Equipo 7", version="1.0.0")
+app = FastAPI(title="Servicio de Catálogo - Equipo 7", version="1.1.0")
 
 app.add_middleware(
     CORSMiddleware,
@@ -19,7 +19,12 @@ app.add_middleware(
 
 @app.get("/")
 def inicio():
-    return {"servicio": "Catálogo - Equipo 7", "docs": "/docs", "catalogo": "/api/catalogo"}
+    return {
+        "servicio": "Catálogo - Equipo 7",
+        "docs": "/docs",
+        "catalogo": "/api/catalogo",
+        "detalle": "/api/catalogo/{id}",
+    }
 
 
 @app.get("/api/catalogo")
@@ -36,7 +41,6 @@ def obtener_catalogo(
     if precio_max is not None:
         query = query.lte("precio", precio_max)
     if buscar:
-        # Busca en nombre y en descripción (quitamos signos que rompen el filtro)
         texto = buscar.replace(",", " ").replace("(", " ").replace(")", " ").strip()
         if texto:
             query = query.or_(f"nombre.ilike.%{texto}%,descripcion.ilike.%{texto}%")
@@ -53,16 +57,33 @@ def obtener_catalogo(
     res = query.execute()
     items = res.data or []
 
-    # Enriquecer con flag de agotado
     for item in items:
         item["agotado"] = item.get("stock", 0) <= 0
 
     return items
 
 
+@app.get("/api/catalogo/{id}")
+def obtener_producto(id: str):
+    res = (
+        supabase.table("cat_productos")
+        .select("*")
+        .eq("id", id)
+        .eq("activo", True)
+        .limit(1)
+        .execute()
+    )
+
+    if not res.data:
+        raise HTTPException(status_code=404, detail="Producto no encontrado")
+
+    producto = res.data[0]
+    producto["agotado"] = producto.get("stock", 0) <= 0
+    return producto
+
+
 @app.post("/api/catalogo/sincronizar")
 def sincronizar_producto(payload: dict):
-    # Invocado por Equipo 4 cuando se crea o modifica un producto
     obligatorios = ["id", "vendedor_id", "sku", "nombre", "precio", "stock"]
     faltan = [c for c in obligatorios if c not in payload]
     if faltan:
