@@ -17,6 +17,17 @@ app.add_middleware(
 )
 
 
+
+
+@app.get("/health")
+def health():
+    return {
+        "status": "healthy",
+        "service": "catalogo",
+        "team": "Equipo 7",
+        "version": "1.0.0",
+    }
+
 @app.get("/")
 def inicio():
     return {
